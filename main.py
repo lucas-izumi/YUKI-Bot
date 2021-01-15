@@ -2,6 +2,7 @@ import discord
 import os
 import config as CONFIG
 from discord.ext.commands import Bot
+from keep_alive import keep_alive
 
 intents = discord.Intents.default()
 intents.members = True
@@ -69,4 +70,5 @@ async def on_member_update(before, after):
   elif count != 2 and flag == 1:
     await after.remove_roles(myRole)
 
+keep_alive()
 client.run(os.getenv('BOT_TOKEN'))
