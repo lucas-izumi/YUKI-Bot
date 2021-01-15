@@ -53,15 +53,20 @@ async def on_message(message):
 @client.event
 async def on_member_update(before, after):
   global rolelist_
+  myGuild = client.get_guild(int(guild_id_))
+  myRole = myGuild.get_role(int(rolelist_[2]))
   count = 0
-  for rl in rolelist_:
+  flag = 0
+  for rl in rolelist_[:2]:
     for r in after.roles:
       if str(rl) == str(r.id):
         count += 1
-  if (count == 2):
-    myGuild = client.get_guild(guild_id_);
-    myRole = myGuild.get_role(int(rolelist_[2]))
+      if str(myRole.id) == str(r.id):
+        flag = 1
+
+  if count == 2 and flag == 0:
     await after.add_roles(myRole)
-  # remover o cargo conjunto caso um dos cargos seja removido
+  elif count != 2 and flag == 1:
+    await after.remove_roles(myRole)
 
 client.run(os.getenv('BOT_TOKEN'))
